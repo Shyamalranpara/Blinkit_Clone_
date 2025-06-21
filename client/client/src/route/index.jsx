@@ -18,6 +18,7 @@ import UploadProduct from "../pages/UploadProduct";
 import ProductAdmin from "../pages/ProductAdmin";
 import AdminPermision from "../layout/AdminPermision";
 import ProductListPage from "../pages/ProductListPage";
+import ProductDisplayPage from "../pages/ProductDisplayPage";
 
 const router = createBrowserRouter([
     {
@@ -99,6 +100,11 @@ const router = createBrowserRouter([
                     }
                 ]
             },
+
+            {
+                path:"product/:product",
+                element:<ProductDisplayPage/>
+            }
         ]
     }
 ])

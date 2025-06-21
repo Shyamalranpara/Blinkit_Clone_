@@ -6,6 +6,7 @@ import SummaryApi from '../common/SummaryApi'
 import  AxiosToastError  from '../utils/AxiosToastError'
 import Loading from '../components/Loading'
 import { valideURLConvert } from '../utils/valideURLConvert'
+import CardProduct from '../components/CardProduct'
 
 const ProductListPage = () => {
   const [data, setData] = useState([])

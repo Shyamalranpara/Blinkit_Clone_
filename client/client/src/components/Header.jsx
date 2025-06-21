@@ -9,6 +9,8 @@ import { store } from '../store/store';
 import { GoTriangleUp } from "react-icons/go";
 import { GoTriangleDown } from "react-icons/go";
 import UserMenu from './UserMenu';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Box from '@mui/material/Box';
 
 const Header = () => {
   const [isMobile] = useMobile()
@@ -27,6 +29,10 @@ const Header = () => {
   const handleCloseUserMenu = () => {
     setOpenUserMenu(false)
   }
+
+  const handleClickAway = () => {
+    setOpenUserMenu(false);
+  };
 
   const handleMobileUser = () => {
     if (!user._id) {
@@ -75,28 +81,33 @@ const Header = () => {
               <div className='hidden lg:flex items-center gap-10'>
                 {
                   user?._id ? (
-                    <div className='relative'>
-                      <div onClick={() => setOpenUserMenu(preve => !preve)} className='flex select-none items-center gap-1 cursor-pointer'>
-                        <p>Account</p>
-                        {
-                          openUserMenu ? (
-                            <GoTriangleUp size={25} />
-                          ) : (
-                            <GoTriangleDown size={25} />
-                          )
-                        }
-                      </div>
-                      {
-                        openUserMenu && (
-                          <div className='absolute right-0 top-12'>
-                            <div className='bg-white rounded p-4 min-w-52  lg:shadow-lg'>
+                    <ClickAwayListener onClickAway={handleClickAway}>
+                      <Box sx={{ position: 'relative' }}>
+                        <div onClick={() => setOpenUserMenu(prev => !prev)} className='flex select-none items-center gap-1 cursor-pointer'>
+                          <p>Account</p>
+                          {
+                            openUserMenu ? (
+                              <GoTriangleUp size={25} />
+                            ) : (
+                              <GoTriangleDown size={25} />
+                            )
+                          }
+                        </div>
+                        {openUserMenu && (
+                          <Box sx={{
+                            position: 'absolute',
+                            top: 48,
+                            right: 0,
+                            zIndex: 1,
+                            minWidth: '208px'
+                          }}>
+                            <div className='bg-white rounded p-4 min-w-52 lg:shadow-lg'>
                               <UserMenu close={handleCloseUserMenu} />
                             </div>
-                          </div>
-                        )
-                      }
-
-                    </div>
+                          </Box>
+                        )}
+                      </Box>
+                    </ClickAwayListener>
                   ) : (
 
                     <button onClick={redirectToLoginPage} className='text-lg px-2'>Login</button>

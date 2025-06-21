@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom'
 import { valideURLConvert } from '../utils/valideURLConvert'
 import { useState } from 'react'
 import AddToCartButton from './AddToCartButton'
+import { DisplayPriceInRupees } from '../utils/DisplayPriceInRupees'
+import PropTypes from 'prop-types'
+
+const fallbackImage = 'https://via.placeholder.com/150?text=No+Image';
 
 const CardProduct = ({data}) => {
     const url = `/product/${valideURLConvert(data.name)}-${data._id}`
@@ -12,7 +16,7 @@ const CardProduct = ({data}) => {
     <Link to={url} className='border py-2 lg:p-4 grid gap-1 lg:gap-3 min-w-36 lg:min-w-52 rounded cursor-pointer bg-white' >
       <div className='min-h-20 w-full max-h-24 lg:max-h-32 rounded overflow-hidden'>
             <img 
-                src={data.image[0]}
+                src={data.image && data.image[0] ? data.image[0] : fallbackImage}
                 className='w-full h-full object-scale-down lg:scale-125'
             />
       </div>
@@ -39,7 +43,7 @@ const CardProduct = ({data}) => {
       <div className='px-2 lg:px-0 flex items-center justify-between gap-1 lg:gap-3 text-sm lg:text-base'>
         <div className='flex items-center gap-1'>
           <div className='font-semibold'>
-              {/* {DisplayPriceInRupees(pricewithDiscount(data.price,data.discount))}  */}
+              {DisplayPriceInRupees((data.price))} 
           </div>
           
           
@@ -58,6 +62,18 @@ const CardProduct = ({data}) => {
 
     </Link>
   )
+}
+
+CardProduct.propTypes = {
+  data: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    image: PropTypes.array,
+    discount: PropTypes.number,
+    unit: PropTypes.string,
+    price: PropTypes.number,
+    stock: PropTypes.number
+  }).isRequired
 }
 
 export default CardProduct

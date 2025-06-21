@@ -249,12 +249,32 @@ try{
     });
 }
 }
+async function getProductDetails(req,res){
+try{
+    const { productId } = req.body 
 
+    const product = await ProductModel.findOne({ _id : productId })
+
+
+    return res.json({
+        message : "product details",
+        data : product,
+        error : false,
+        success : true
+    })
+}catch (error) {
+    return res.status(500).json({
+        message : error.message || error,
+        error : true,
+        success : false
+    })
+}}
 module.exports = {
     createProductController,
     getProductController,
     getProductByCategory,
     deleteProductController,
     getAllProductsController,
-    getProductByCategoryAndSubCategory
+    getProductByCategoryAndSubCategory,
+    getProductDetails,
 };

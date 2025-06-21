@@ -16,6 +16,7 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
     const subCategoryData = useSelector(state => state.product.allSubCategory)
     const loadingCardNumber = new Array(6).fill(null)
 
+    // console.log(data)
     const fetchCategoryWiseProduct = async () => {
         try {
             setLoading(true)
@@ -27,6 +28,8 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
             })
 
             const { data: responseData } = response
+
+            console.log('CategoryWiseProductDisplay API response:', responseData);
 
             if (responseData.success) {
                 setData(responseData.data)
@@ -97,7 +100,12 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
                         })
                     }
 
+                    {!loading && data.length === 0 && (
+                        <div className='w-full text-center text-gray-500 py-8'>No products found in this category.</div>
+                    )}
+
                 </div>
+
                 <div className='w-full left-0 right-0 container mx-auto  px-2  absolute hidden lg:flex justify-between'>
                     <button onClick={handleScrollLeft} className='z-10 relative bg-white hover:bg-gray-100 shadow-lg text-lg p-2 rounded-full'>
                         <FaAngleLeft />
@@ -106,6 +114,7 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
                         <FaAngleRight />
                     </button>
                 </div>
+
             </div>
         </div>
     )
