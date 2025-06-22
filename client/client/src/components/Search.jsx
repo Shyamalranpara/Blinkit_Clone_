@@ -10,6 +10,8 @@ const Search = () => {
   const location = useLocation()
   const [isSearchPage, setIsSearchPage] = useState(false)
   const [isMobile] = useMobile()
+  const params = useLocation()
+  const searchText = params.search.slice(3)
   // console.log("location",location)
 
   useEffect(() => {
@@ -21,6 +23,13 @@ const Search = () => {
   const redireactToSearchPage = () => {
     navigate("/search")
   }
+
+  
+  const handleOnChange = (e)=>{
+    const value = e.target.value
+    const url = `/search?q=${value}`
+    navigate(url)
+}
 
   console.log("search", isSearchPage)
   return (
@@ -82,7 +91,9 @@ const Search = () => {
               <input type="text"
                 placeholder='Search for atta dal and more'
                 autoFocus
+                defaultValue={searchText}
                 className='bg-transparent w-full h-full outline-none'
+                onChange={handleOnChange}
               />
             </div>
 
