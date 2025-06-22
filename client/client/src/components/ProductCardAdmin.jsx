@@ -5,6 +5,7 @@ import SummaryApi from '../common/SummaryApi'
 import Axios from '../utils/Axios'
 import AxiosToastError from '../utils/AxiosToastError'
 import toast from 'react-hot-toast'
+import EditProductAdmin from '../components/EditProductAdmin'
 
 const ProductCardAdmin = ({ data, fetchProductData }) => {
   const [editOpen,setEditOpen]= useState(false)

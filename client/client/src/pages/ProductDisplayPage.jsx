@@ -10,6 +10,7 @@ import { pricewithDiscount } from '../utils/PriceWithDiscount'
 import image1 from '../assets/minute_delivery.png'
 import image2 from '../assets/Best_Prices_Offers.png'
 import image3 from '../assets/Wide_Assortment.png'
+import { disconnect } from 'mongoose'
 
 const ProductDisplayPage = () => {
   const params = useParams()
@@ -109,6 +110,28 @@ const ProductDisplayPage = () => {
           </div>
         </div>
 
+            <div className='my-4  hidden lg:grid gap-3 '>
+              <div>
+            <p className='text-base'>{data.description}</p>
+            <p className='font-semibold'>Description</p>
+              </div>
+
+              <div>
+                    <p className='font-semibold'>Unit</p>
+                    <p className='text-base'>{data.unit}</p>
+                </div>
+
+                {
+                  data?.more_details && Object.keys(data?.more_details).map((element,index)=>{
+                    return(
+                      <div>
+                          <p className='font-semibold'>{element}</p>
+                          <p className='text-base'>{data?.more_details[element]}</p>
+                      </div>
+                    )
+                  })
+                }
+            </div>
       </div>
 
 
@@ -119,8 +142,20 @@ const ProductDisplayPage = () => {
         <p className=''>{data.unit}</p>
         <Divider />
         <p className=''>Price</p>
+        <div className='flex items-center gap-2 lg:gap-4'>
         <div className='border border-green-600 px-4 py-2 rounded bg-green-50 w-fit'>
           <p className='font-semibold text-lg lg:text-xl'>{DisplayPriceInRupees(pricewithDiscount(data.price, data.discount))}</p>
+        </div>
+        {
+                  data.discount && (
+                    <p className='line-through'>{DisplayPriceInRupees(data.price)}</p>
+                  )
+                }
+                {
+                  data.discount && (
+                    <p className="font-bold text-green-600 lg:text-2xl">{data.discount}% <span className='text-base text-neutral-500'>Discount</span></p>
+                  )
+                }
         </div>
 
         {

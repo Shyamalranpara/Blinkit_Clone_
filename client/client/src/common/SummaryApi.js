@@ -1,3 +1,4 @@
+
 export const baseURL = "http://localhost:1010"
 
 const SummaryApi = {
@@ -106,6 +107,18 @@ const SummaryApi = {
     },
     getProductDetails:{
         url:'/api/product/get-product-details',
+        method:'post'
+    },
+    updateProductDetails:{
+        url:'api/product/update-product-details',
+        method:'put'
+    },
+    deleteProduct:{
+        url:'api/product/delete-product',
+        method:'delete'
+    },
+    searchProduct:{
+        url:'api/product/search-product',
         method:'post'
     }
 
