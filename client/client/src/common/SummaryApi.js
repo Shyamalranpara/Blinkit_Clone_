@@ -120,7 +120,26 @@ const SummaryApi = {
     searchProduct:{
         url:'api/product/search-product',
         method:'post'
-    }
+    },
+    addToCart:{
+        url:'api/cart/create',
+        method:'post'
+    },
+    getCartItem:{
+        url:'api/cart/get',
+        method:'get'
+    },
+    updateCartItemQty:{
+        url:'api/cart/update-qty',
+        method:'put'
+    },
+    deleteCartItem:{
+        url:'api,cart/delete-cart-item',
+        method:'delete'
+    },
+    
+
+    
 
 }
 export default SummaryApi

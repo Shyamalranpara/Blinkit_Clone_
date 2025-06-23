@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Search from './Search'
 import { Link, useLocation, useNavigate } from 'react-router'
 import { FaRegCircleUser } from "react-icons/fa6";
@@ -11,6 +11,8 @@ import { GoTriangleDown } from "react-icons/go";
 import UserMenu from './UserMenu';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Box from '@mui/material/Box';
+import { DisplayPriceInRupees } from '../utils/DisplayPriceInRupees';
+import  {handleAddItemCart}  from '../store/cartProduct'
 
 const Header = () => {
   const [isMobile] = useMobile()
@@ -18,9 +20,13 @@ const Header = () => {
   const navigate = useNavigate()
   const isSearchPage = location.pathname === "/search"
   const [openUserMenu, setOpenUserMenu] = useState(false)
-
+   const [totalPrice,setTotalPrice] = useState(0)
+   const [totalQty,setTotalQty] = useState(0)
   const user = useSelector((state) => state.user)
   console.log("user form store", store)
+
+  const cartItem = useSelector(state => state.cartItem.cart)
+  console.log(cartItem)
 
   const redirectToLoginPage = () => {
     navigate("/login")
@@ -48,6 +54,18 @@ const Header = () => {
 
   // console.log("isSearchPage",isSearchPage)
 
+     useEffect(()=>{
+         const qty = cartItem.reduce((preve,curr)=>{
+         return preve + curr.quantity
+      },0)
+      setTotalQty(qty)
+        
+       const tPrice = cartItem.reduce((preve,curr)=>{
+          return preve + (curr.productId.price * curr.quantity)
+      },0)
+      setTotalPrice(tPrice)
+
+ },[cartItem])
   return (
     <header className='h-26 lg:h-20 lg:shadow-md sticky top-0 z-40 flex items-center flex-col justify-center gap-1 bg-white '>
 
@@ -120,7 +138,17 @@ const Header = () => {
                   </div>
 
                   <div className='font-semibold'>
-                    <p>My Cart</p>
+                  {
+                                                    cartItem[0] ? (
+                                                        <div>
+                                                            <p>{totalQty} Items</p>
+                                                            <p>{DisplayPriceInRupees(totalPrice)}</p>
+
+                                                        </div>
+                                                    ) : (
+                                                        <p>My Cart</p>
+                                                    )
+                                                }
                   </div>
 
                 </button>

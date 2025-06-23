@@ -10,7 +10,7 @@ const categoryRoutes = require("./routes/categoryRoutes.js");
 const uploadRoutes = require("./routes/uploadRoutes.js");
 const subCategoryRoutes = require("./routes/subCategoryRoutes.js");
 const productRoutes = require("./routes/productRoutes.js");
-
+const cartRoutes = require("./routes/cartRoutes.js")
 dotenv.config();
 
 const app = express();
@@ -32,6 +32,7 @@ app.use("/api/category",categoryRoutes);
 app.use("/api/file",uploadRoutes);
 app.use("/api/subCategory",subCategoryRoutes);
 app.use("/api/product",productRoutes);
+app.use("/api/cart",cartRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "server is running!" + PORT});

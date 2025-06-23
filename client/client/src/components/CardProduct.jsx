@@ -2,17 +2,19 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { valideURLConvert } from '../utils/valideURLConvert'
 import { useState } from 'react'
-import AddToCartButton from './AddToCartButton'
 import { DisplayPriceInRupees } from '../utils/DisplayPriceInRupees'
 import PropTypes from 'prop-types'
 import { pricewithDiscount } from '../utils/PriceWithDiscount'
+import AddToCartButton from '../components/AddToCartButton' 
+import { useGlobalContext } from '../provider/GlobalProvider'
 
 const fallbackImage = 'https://via.placeholder.com/150?text=No+Image';
 
 const CardProduct = ({data}) => {
     const url = `/product/${valideURLConvert(data.name)}-${data._id}`
     const [loading,setLoading] = useState(false)
-  
+  const {fetchCartItem}=useGlobalContext()
+
   return (
     <Link to={url} className='border py-2 lg:p-4 grid gap-1 lg:gap-3 min-w-36 lg:min-w-52 rounded cursor-pointer bg-white' >
       <div className='min-h-20 w-full max-h-24 lg:max-h-32 rounded overflow-hidden'>

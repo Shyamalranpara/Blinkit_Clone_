@@ -10,6 +10,8 @@ import { useDispatch } from 'react-redux';
 import { setAllCategory,setAllSubCategory } from './store/productSlice';
 import Axios from './utils/Axios';
 import SummaryApi from './common/SummaryApi';
+import {handleAddItemCart} from './store/cartProduct'
+import GlobalProvider from './provider/GlobalProvider';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -53,14 +55,31 @@ const App = () => {
     }
   };
 
-  useEffect(() => {
+//   const fetchCartItem = async()=>{
+//     try{
+// const response = await Axios({
+//   ...SummaryApi.getCartItem
+// })
+// const {data: responseData}=response
+
+// if(responseData.success){
+//   dispatch(handleAddItemCart(responseData.data))
+//   console.log(responseData)
+// }
+//     }catch(error){
+//       console.log(error)
+//     }
+//   }
+  
+useEffect(() => {
     fetchUser();
     fetchCategory();
     fatchSubCategory();
+    // fetchCartItem();
   }, []);
 
   return (
-    <>
+    <GlobalProvider>
       <Header />
 
       <main className="min-h-[78vh]">
@@ -69,7 +88,7 @@ const App = () => {
 
       <Footer />
       <Toaster />
-    </>
+    </GlobalProvider>
   );
 };
 
