@@ -13,6 +13,8 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Box from '@mui/material/Box';
 import { DisplayPriceInRupees } from '../utils/DisplayPriceInRupees';
 import  {handleAddItemCart}  from '../store/cartProduct'
+import { useGlobalContext } from '../provider/GlobalProvider';
+import DisplayCartItem from '../components/DisplayCartItem';
 
 const Header = () => {
   const [isMobile] = useMobile()
@@ -20,13 +22,16 @@ const Header = () => {
   const navigate = useNavigate()
   const isSearchPage = location.pathname === "/search"
   const [openUserMenu, setOpenUserMenu] = useState(false)
-   const [totalPrice,setTotalPrice] = useState(0)
-   const [totalQty,setTotalQty] = useState(0)
+  const {totalPrice,totalQty}=useGlobalContext()
+  const [openCartSection,setOpenCartSection]=useState(false)
+
   const user = useSelector((state) => state.user)
   console.log("user form store", store)
 
   const cartItem = useSelector(state => state.cartItem.cart)
-  console.log(cartItem)
+  // console.log("Cart Items:", cartItem);
+  // console.log("Cart Items (JSON):", JSON.stringify(cartItem, null, 2));
+  console.table(cartItem);
 
   const redirectToLoginPage = () => {
     navigate("/login")
@@ -54,18 +59,21 @@ const Header = () => {
 
   // console.log("isSearchPage",isSearchPage)
 
-     useEffect(()=>{
-         const qty = cartItem.reduce((preve,curr)=>{
-         return preve + curr.quantity
-      },0)
-      setTotalQty(qty)
+//      useEffect(()=>{
+//          const qty = cartItem.reduce((preve,curr)=>{
+//          return preve + curr.quantity
+//       },0)
+//       setTotalQty(qty)
         
-       const tPrice = cartItem.reduce((preve,curr)=>{
-          return preve + (curr.productId.price * curr.quantity)
-      },0)
-      setTotalPrice(tPrice)
+//        const tPrice = cartItem.reduce((preve,curr)=>{
+//           return preve + (curr.productId.price * curr.quantity)
+//       },0)
+//       setTotalPrice(tPrice)
 
- },[cartItem])
+//  },[cartItem])
+
+  // cartItem.forEach(item => console.log(item));
+
   return (
     <header className='h-26 lg:h-20 lg:shadow-md sticky top-0 z-40 flex items-center flex-col justify-center gap-1 bg-white '>
 
@@ -131,13 +139,13 @@ const Header = () => {
                     <button onClick={redirectToLoginPage} className='text-lg px-2'>Login</button>
                   )
                 }
-                <button className='flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-3 rounded text-white'>
+                <button onClick={()=>setOpenCartSection(true)} className='flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-3 rounded text-white'>
                   {/* add to cart icon  */}
                   <div className='animate-bounce'>
                     <BsCart4 size={26} />
                   </div>
 
-                  <div className='font-semibold'>
+                  <div className='font-semibold text-sm'>
                   {
                                                     cartItem[0] ? (
                                                         <div>
@@ -162,6 +170,12 @@ const Header = () => {
       <div className='container mx-auto px-2 py-2 lg:hidden'>
         <Search />
       </div>
+
+      {
+        openCartSection && (
+          <DisplayCartItem close={()=>setOpenCartSection(false)}/>
+        )
+      }
     </header>
   )
 }

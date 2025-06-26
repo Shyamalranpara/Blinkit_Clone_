@@ -1,9 +1,12 @@
 import { createContext,useContext, useEffect, useState } from "react";
 import Axios from "../utils/Axios";
 import SummaryApi from "../common/SummaryApi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { handleAddItemCart } from "../store/cartProduct";
 import AxiosToastError from "../utils/AxiosToastError";
+import { toast } from "react-hot-toast";
+import { pricewithDiscount } from "../utils/PriceWithDiscount";
+
 export const GlobalContext = createContext(null)
 
 export const useGlobalContext = ()=> useContext(GlobalContext)
@@ -11,6 +14,11 @@ export const useGlobalContext = ()=> useContext(GlobalContext)
 
 const GlobalProvider = ({children}) => {
     const dispatch = useDispatch();
+
+    const [totalPrice,setTotalPrice] = useState(0)
+    const [notDiscountTotalPrice,setNotDiscountPrice]=useState(0)
+    const [totalQty,setTotalQty] = useState(0)
+    const cartItem = useSelector(state => state.cartItem.cart)
 
     const fetchCartItem = async()=>{
         try{
@@ -62,19 +70,34 @@ const GlobalProvider = ({children}) => {
   
             if(responseData.success){
               toast.success(responseData.message)
-              fetchCartItem()
+              await fetchCartItem(dispatch)
             }
         } catch (error) {
            AxiosToastError(error)
         }
       }
-
+  
       
       
 useEffect(()=>{
     fetchCartItem();
 
 },[dispatch])
+
+useEffect(()=>{
+  const qty = cartItem.reduce((preve,curr)=>{
+  return preve + curr.quantity
+},0)
+setTotalQty(qty)
+ 
+const tPrice= cartItem.reduce((preve,curr)=>{
+  const priceAfterDiscount = pricewithDiscount(curr?.productId?.price,curr?.productId?.discount)
+   return preve + (curr?.productId?.price * curr.quantity)
+},0)
+setTotalPrice(tPrice)
+setNotDiscountPrice(notDiscountTotalPrice)
+},[cartItem])
+
 
 function useFetchCartItem() {
   const dispatch = useDispatch();
@@ -84,7 +107,11 @@ function useFetchCartItem() {
     return(
         <GlobalContext.Provider value={{
     fetchCartItem,
-    updateCartItem
+    updateCartItem,
+    deleteCartItem,
+    totalPrice,
+    totalQty,
+    notDiscountTotalPrice
         }}>
             {children}
         </GlobalContext.Provider>

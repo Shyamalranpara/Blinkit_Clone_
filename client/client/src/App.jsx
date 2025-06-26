@@ -12,6 +12,7 @@ import Axios from './utils/Axios';
 import SummaryApi from './common/SummaryApi';
 import {handleAddItemCart} from './store/cartProduct'
 import GlobalProvider from './provider/GlobalProvider';
+import CartMobileLink from './components/CartMobileLink';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -88,6 +89,7 @@ useEffect(() => {
 
       <Footer />
       <Toaster />
+    <CartMobileLink/>
     </GlobalProvider>
   );
 };

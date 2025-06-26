@@ -70,10 +70,11 @@ const AddToCartButton = ({ data }) => {
         e.preventDefault()
         e.stopPropagation()
         if(qty === 1){
-            deleteCartItem(cartItemDetails?._id)
+            await deleteCartItem(cartItemDetails?._id)
+            await fetchCartItem(dispatch)
+            toast.success("Item removed")
         }else{
-            const response = await updateCartItem(cartItemDetails?._id,qty-1)
-
+            const response = await updateCartItem(cartItemDetails?._id, qty-1)
             if(response.success){
                 toast.success("Item remove")
             }

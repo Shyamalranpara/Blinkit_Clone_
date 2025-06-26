@@ -11,6 +11,7 @@ import image1 from '../assets/minute_delivery.png'
 import image2 from '../assets/Best_Prices_Offers.png'
 import image3 from '../assets/Wide_Assortment.png'
 import { disconnect } from 'mongoose'
+import AddToCartButton from '../components/AddToCartButton'
 
 const ProductDisplayPage = () => {
   const params = useParams()
@@ -165,7 +166,8 @@ const ProductDisplayPage = () => {
                 : (
                   // <button className='my-4 px-4 py-1 bg-green-600 hover:bg-green-700 text-white rounded'>Add</button>
                   <div className='my-4'>
-                    <button className=' bg-green-600 hover:bg-green-700 text-white my-4 px-4 py-1 text-white rounded'>Add</button>
+                    {/* <button className=' bg-green-600 hover:bg-green-700 text-white my-4 px-4 py-1 text-white rounded'>Add</button> */}
+                    <AddToCartButton data={data}/>
                   </div>
                 )
               }
@@ -211,6 +213,28 @@ const ProductDisplayPage = () => {
           </div>
         </div>
 
+  {/****only mobile */}
+  <div className='my-4 grid gap-3 '>
+                <div>
+                    <p className='font-semibold'>Description</p>
+                    <p className='text-base'>{data.description}</p>
+                </div>
+                <div>
+                    <p className='font-semibold'>Unit</p>
+                    <p className='text-base'>{data.unit}</p>
+                </div>
+                {
+                  data?.more_details && Object.keys(data?.more_details).map((element,index)=>{
+                    return(
+                      <div>
+                          <p className='font-semibold'>{element}</p>
+                          <p className='text-base'>{data?.more_details[element]}</p>
+                      </div>
+                    )
+                  })
+                }
+            </div>
+      
       </div>
     </section>
   )
